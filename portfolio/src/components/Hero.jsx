@@ -65,7 +65,7 @@ export default function Hero() {
           <span className="block bg-gradient-to-r from-[#00c6ff] via-[#0072ff] to-[#ff00cc] text-transparent bg-clip-text drop-shadow-xl animate-text-glow">
             Hey there, I'm
           </span>
-          <span className="animate-wiggle"></span>👋
+          <span className="animate-wiggle">Amrit Raj Mishra</span>👋
         </h1>
         <br /> <br />
         <h1 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
