@@ -1,47 +1,64 @@
 // server.js
-import express from 'express';
-import cors from 'cors';
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+import express from "express";
+import cors from "cors";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 
 dotenv.config();
+
 const app = express();
 
-// Middlewares
-app.use(cors());
+// ✅ Use CORS properly
+app.use(cors({ origin: "http://localhost:5173" }));
+
+// ✅ Parse JSON body
 app.use(express.json());
 
-// Connect MongoDB
+// ✅ Connect to MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   })
   .then(() => console.log("✅ MongoDB connected"))
-  .catch(err => console.log("❌ MongoDB connection error:", err));
+  .catch((err) => {
+    console.error("❌ MongoDB connection error:", err);
+    process.exit(1); // Stop server if DB fails
+  });
 
-// Schema
-const contactSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  message: String
-}, { timestamps: true });
+// ✅ Schema & Model
+const contactSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    email: { type: String, required: true },
+    message: { type: String, required: true },
+  },
+  { timestamps: true }
+);
 
 const Contact = mongoose.model("Contact", contactSchema);
 
-// API Route
-app.post('/api/contact', async (req, res) => {
-  const { name, email, message } = req.body;
+// ✅ API Route
+app.post("/api/contact", async (req, res) => {
   try {
+    console.log("📩 Incoming request body:", req.body); // Debug
+
+    const { name, email, message } = req.body;
+    if (!name || !email || !message) {
+      return res.status(400).json({ success: false, message: "All fields required" });
+    }
+
     const newContact = new Contact({ name, email, message });
     await newContact.save();
+
     res.status(201).json({ success: true, message: "Message sent successfully" });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Server error", error });
+    console.error("❌ Error saving contact:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 });
 
-// Start Server
+// ✅ Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
