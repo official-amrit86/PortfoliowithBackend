@@ -45,19 +45,32 @@ app.post("/api/contact", async (req, res) => {
 
     const { name, email, message } = req.body;
     if (!name || !email || !message) {
-      return res.status(400).json({ success: false, message: "All fields required" });
+      return res
+        .status(400)
+        .json({ success: false, message: "All fields required" });
     }
 
     const newContact = new Contact({ name, email, message });
     await newContact.save();
 
-    res.status(201).json({ success: true, message: "Message sent successfully" });
+    res
+      .status(201)
+      .json({ success: true, message: "Message sent successfully" });
   } catch (error) {
     console.error("❌ Error saving contact:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 });
+app.get("/", (req, res) => {
+  res.send("hello world");
+});
 
+app.get("/", (req, res) => {
+  res.send({
+    activeStatus: true,
+    error: false,
+  });
+});
 // ✅ Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
