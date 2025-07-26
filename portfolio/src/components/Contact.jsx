@@ -42,7 +42,6 @@ export default function Contact() {
             type="text"
             placeholder="Your Name"
             required
-             value={formData.name}
             onChange={handleChange}
             className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-fuchsia-400 bg-white/80 placeholder-gray-500 text-gray-800"
           />
@@ -51,7 +50,6 @@ export default function Contact() {
             type="email"
             placeholder="Your Email"
             required
-             value={formData.email}    // <-- Add this
             onChange={handleChange}
             className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-fuchsia-400 bg-white/80 placeholder-gray-500 text-gray-800"
           />
@@ -60,7 +58,6 @@ export default function Contact() {
             placeholder="Your Message"
             rows="5"
             required
-              value={formData.message}  // <-- Add this
             onChange={handleChange}
             className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-fuchsia-400 bg-white/80 placeholder-gray-500 text-gray-800"
           ></textarea>
